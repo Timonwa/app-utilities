@@ -1,0 +1,91 @@
+{
+  "name": "@timonwa/app-utilities",
+  "version": "0.1.0",
+  "description": "Typed helper functions for building apps \u2014 formatting, strings, files, and slugs. Zero dependencies, universal by default, with browser-only APIs behind a separate entry point.",
+  "keywords": [
+    "utilities",
+    "helpers",
+    "format",
+    "intl",
+    "typescript",
+    "browser",
+    "react-native"
+  ],
+  "license": "MIT",
+  "author": "Timonwa Akintokun",
+  "homepage": "https://github.com/Timonwa/app-utilities#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Timonwa/app-utilities.git"
+  },
+  "bugs": "https://github.com/Timonwa/app-utilities/issues",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser/index.d.mts",
+        "default": "./dist/browser/index.mjs"
+      },
+      "require": {
+        "types": "./dist/browser/index.d.cts",
+        "default": "./dist/browser/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.1.1",
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "check:exports": "attw --pack . --profile node16",
+    "check:publish": "publint",
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm check:publish && pnpm check:exports && pnpm docs:api && git diff --exit-code README.md",
+    "release": "pnpm build && changeset publish",
+    "prepare": "husky",
+    "docs:api": "node scripts/generate-readme-api.mjs"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@biomejs/biome": "^2.4.0",
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^3.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
+    "publint": "^0.3.23",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.3",
+    "unrun": "^0.3.1",
+    "vitest": "^4.1.10"
+  },
+  "lint-staged": {
+    "*.{ts,json,md}": "biome check --write --no-errors-on-unmatched"
+  },
+  "dependencies": {
+    "date-fns": "^4.4.0"
+  }
+}
