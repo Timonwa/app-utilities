@@ -1,6 +1,10 @@
 import { toArrayView } from "./_shared.js";
 
-/** @example getArrayItemById([{ id: 1 }, { id: 2 }], 2) // { id: 2 } */
+/**
+ * Finds the first item whose `id` matches, or undefined when none does.
+ *
+ * @example getArrayItemById([{ id: 1 }, { id: 2 }], 2) // { id: 2 }
+ */
 export function getArrayItemById<T extends { id: string | number }>(
   array: T[],
   id: string | number,

@@ -1,6 +1,7 @@
 import { invalid, VALID, type ValidationResult } from "./_shared.js";
 import { validateFileType } from "./validate-file-type.js";
 
+/** The web-common defaults (MP4, WebM, Ogg, QuickTime); pass your own list to change the policy. */
 export const DEFAULT_VIDEO_TYPES = [
   "video/mp4",
   "video/webm",
@@ -8,7 +9,11 @@ export const DEFAULT_VIDEO_TYPES = [
   "video/quicktime",
 ] as const;
 
-/** @example validateVideoFile(file, { maxSizeBytes: 50_000_000 }) // { valid: true } */
+/**
+ * Validates a video file's MIME type against an allowed list (defaulting to `DEFAULT_VIDEO_TYPES`) and, when `maxSizeBytes` is set, its size.
+ *
+ * @example validateVideoFile(file, { maxSizeBytes: 50_000_000 }) // { valid: true }
+ */
 export function validateVideoFile(
   file: File,
   options: { allowedTypes?: readonly string[]; maxSizeBytes?: number } = {},

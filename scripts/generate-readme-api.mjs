@@ -75,8 +75,9 @@ function displayParams(raw) {
     .map((p) => {
       const trimmed = p.trim();
       if (trimmed.startsWith("{")) return "options";
-      const name = trimmed.split(":")[0].trim().replace("?", "");
-      const defaultMatch = trimmed.match(/=\s*([^,]+)$/);
+      const name = trimmed.split(":")[0].split("=")[0].trim().replace("?", "");
+      // `(?<!=)=(?!>)` so `=>` in a function-typed param is never read as a default.
+      const defaultMatch = trimmed.match(/(?<![=>!<])=(?!>)\s*([^,]+)$/);
       return defaultMatch && !trimmed.includes("{")
         ? `${name} = ${collapse(defaultMatch[1])}`
         : name;
@@ -109,7 +110,7 @@ function parseModule(dir) {
       if (kind === "function") {
         const sigMatch = source
           .slice(match.index)
-          .match(/export (?:async )?function [A-Za-z0-9_]+(<[^>]+>)?\(([\s\S]*?)\)(?::|\s*\{)/);
+          .match(/export (?:async )?function [A-Za-z0-9_]+(<[^(]+>)?\(([\s\S]*?)\)(?::|\s*\{)/);
         signature = `\`${name}(${sigMatch ? displayParams(collapse(sigMatch[2])) : ""})\``;
       }
       entries.push({ name, kind, signature, description, example });

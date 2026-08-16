@@ -1,6 +1,10 @@
 import { invalid, VALID, type ValidationResult } from "./_shared.js";
 
-/** @example validateNumberRange(5, 1, 10) // { valid: true } */
+/**
+ * Validates that a number falls within an inclusive min-max range.
+ *
+ * @example validateNumberRange(5, 1, 10) // { valid: true }
+ */
 export function validateNumberRange(
   value: number,
   min: number,

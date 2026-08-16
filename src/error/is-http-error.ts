@@ -15,7 +15,11 @@ export interface HttpErrorLikeProps {
   isAxiosError?: boolean;
 }
 
-/** @example isHttpError({ response: { status: 404 } }) // true */
+/**
+ * Narrows an unknown value to an HTTP-shaped error — anything carrying a numeric `status`, a `response.status`, or an `isAxiosError` flag.
+ *
+ * @example isHttpError({ response: { status: 404 } }) // true
+ */
 export function isHttpError(error: unknown): error is HttpErrorLikeProps {
   if (typeof error !== "object" || error === null) return false;
   const candidate = error as HttpErrorLikeProps;

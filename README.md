@@ -1,14 +1,17 @@
 # @timonwa/app-utilities
 
-Typed helper functions for building apps — formatting, dates, strings, files, and validation. Universal by default, with browser-only APIs behind a separate entry point, and one dependency (`date-fns`, for the calendar arithmetic you should never hand-roll).
+Typed helper functions for building apps — formatting, dates, strings, files, and validation. Universal by default, with browser-only APIs behind a separate entry point, and one dependency (`date-fns`, for the calendar arithmetic no one should hand-roll).
 
 [![npm](https://img.shields.io/npm/v/@timonwa/app-utilities)](https://www.npmjs.com/package/@timonwa/app-utilities)
 [![CI](https://github.com/Timonwa/app-utilities/actions/workflows/ci.yml/badge.svg)](https://github.com/Timonwa/app-utilities/actions/workflows/ci.yml)
 
+Written in TypeScript; ships ESM and CJS with type declarations, is side-effect free so bundlers drop what you don't import, and every export carries the JSDoc you'll see in your editor.
+
 ## Quickstart
 
 ```bash
-pnpm add @timonwa/app-utilities
+npm install @timonwa/app-utilities
+# or: pnpm add @timonwa/app-utilities · yarn add @timonwa/app-utilities
 ```
 
 ```ts
@@ -53,23 +56,23 @@ const chunks = getArrayChunks(visible, 20); // page-sized slices
 <summary>All 18 exports</summary>
 
 - **`getArrayChunks(array, size)`** — Splits into chunks of at most `size`. `getArrayChunks([1, 2, 3, 4, 5], 2) // [[1, 2], [3, 4], [5]]`
-- **`getArrayDifference(array, exclude)`** — See source. `getArrayDifference([1, 2, 3], [2, 4]) // [1, 3]`
+- **`getArrayDifference(array, exclude)`** — Returns the items of the first array that are not present in the second. `getArrayDifference([1, 2, 3], [2, 4]) // [1, 3]`
 - **`getArrayIntersection(first, second)`** — Values present in both arrays — completes the set trio with `getArrayDifference` and `getArrayUnion`. `getArrayIntersection([1, 2, 3], [2, 3, 4]) // [2, 3]`
-- **`getArrayItemAtIndex(array, index)`** — See source. `getArrayItemAtIndex([10, 20, 30], -1) // 30`
-- **`getArrayItemById(array, id)`** — See source. `getArrayItemById([{ id: 1 }, { id: 2 }], 2) // { id: 2 }`
-- **`getArrayItemsByKeyValue()`** — See source. `getArrayItemsByKeyValue([{ role: "admin" }, { role: "user" }], "role", "admin") // [{ role: "admin" }]`
-- **`getArrayItemsBySearchTerm()`** — Case-insensitive "contains" across the given fields. `getArrayItemsBySearchTerm([{ name: "Alice" }], "ali", ["name"]) // [{ name: "Alice" }]`
-- **`getArraySortedByKey()`** — Sorts by one key. `getArraySortedByKey([{ age: 30 }, { age: 20 }], "age") // [{ age: 20 }, { age: 30 }]`
-- **`getArrayUnion(first, second)`** — See source. `getArrayUnion([1, 2], [2, 3]) // [1, 2, 3]`
-- **`getArrayWithoutDuplicates(array)`** — See source. `getArrayWithoutDuplicates([1, 2, 2, 3]) // [1, 2, 3]`
-- **`getFirstArrayItem(array)`** — See source. `getFirstArrayItem([1, 2, 3]) // 1`
+- **`getArrayItemAtIndex(array, index)`** — Returns the item at the given index, supporting negative indexes, or undefined when out of range. `getArrayItemAtIndex([10, 20, 30], -1) // 30`
+- **`getArrayItemById(array, id)`** — Finds the first item whose `id` matches, or undefined when none does. `getArrayItemById([{ id: 1 }, { id: 2 }], 2) // { id: 2 }`
+- **`getArrayItemsByKeyValue(array, key, value)`** — Returns all items whose given key strictly equals the given value. `getArrayItemsByKeyValue([{ role: "admin" }, { role: "user" }], "role", "admin") // [{ role: "admin" }]`
+- **`getArrayItemsBySearchTerm(array, searchTerm, fields)`** — Case-insensitive "contains" across the given fields. `getArrayItemsBySearchTerm([{ name: "Alice" }], "ali", ["name"]) // [{ name: "Alice" }]`
+- **`getArraySortedByKey(array, key, order = "asc")`** — Sorts by one key. `getArraySortedByKey([{ age: 30 }, { age: 20 }], "age") // [{ age: 20 }, { age: 30 }]`
+- **`getArrayUnion(first, second)`** — Merges two arrays into one with duplicates removed, keeping first-seen order. `getArrayUnion([1, 2], [2, 3]) // [1, 2, 3]`
+- **`getArrayWithoutDuplicates(array)`** — Removes duplicate values, keeping the first occurrence of each. `getArrayWithoutDuplicates([1, 2, 2, 3]) // [1, 2, 3]`
+- **`getFirstArrayItem(array)`** — Returns the first item of the array, or undefined when it is empty. `getFirstArrayItem([1, 2, 3]) // 1`
 - **`getFlattenedArray(array)`** — Flattens one level, dropping anything that is not an array. `getFlattenedArray([[1, 2], [3, 4]]) // [1, 2, 3, 4]`
-- **`getLastArrayItem(array)`** — See source. `getLastArrayItem([1, 2, 3]) // 3`
+- **`getLastArrayItem(array)`** — Returns the last item of the array, or undefined when it is empty. `getLastArrayItem([1, 2, 3]) // 3`
 - **`getShuffledArray(array)`** — Fisher-Yates shuffle on a copy. `getShuffledArray([1, 2, 3, 4]) // [3, 1, 4, 2]`
 - **`groupArrayByConsecutiveKey(array, getKey)`** — Groups runs of adjacent items sharing a key, preserving order. `groupArrayByConsecutiveKey([{c:"a"},{c:"a"},{c:"b"}], (x) => x.c)`
-- **`hasArrayItem(array, value)`** — See source. `hasArrayItem([1, 2, 3], 2) // true`
-- **`isArrayEmpty(array)`** — See source. `isArrayEmpty([]) // true`
-- **`rankByTiers(tiers = > boolean>)`** — Builds a comparator-friendly rank from an ordered list of predicates — the index of the first one that matches, or `tiers.length` for no match.
+- **`hasArrayItem(array, value)`** — Checks whether the array contains the given value. `hasArrayItem([1, 2, 3], 2) // true`
+- **`isArrayEmpty(array)`** — Checks whether the array has no items. `isArrayEmpty([]) // true`
+- **`rankByTiers(tiers)`** — Builds a comparator-friendly rank from an ordered list of predicates — the index of the first one that matches, or `tiers.length` for no match.
 
 </details>
 
@@ -84,17 +87,17 @@ getUsageLevel(getStoragePercent(used, quota)); // "high" -> map to your own colo
 <details>
 <summary>All 14 exports</summary>
 
-- **`convertBytesToGigabytes(bytes)`** — See source. `convertBytesToGigabytes(1073741824) // 1`
-- **`convertBytesToKilobytes(bytes)`** — See source. `convertBytesToKilobytes(2048) // 2`
-- **`convertBytesToMegabytes(bytes)`** — See source. `convertBytesToMegabytes(1048576) // 1`
-- **`convertBytesToTerabytes(bytes)`** — See source. `convertBytesToTerabytes(1099511627776) // 1`
-- **`convertGigabytesToBytes(gigabytes)`** — See source. `convertGigabytesToBytes(1) // 1073741824`
-- **`convertGigabytesToMegabytes(gigabytes)`** — See source. `convertGigabytesToMegabytes(1.5) // 1536`
-- **`convertKilobytesToBytes(kilobytes)`** — See source. `convertKilobytesToBytes(2) // 2048`
-- **`convertMegabytesToBytes(megabytes)`** — See source. `convertMegabytesToBytes(1) // 1048576`
-- **`convertMegabytesToGigabytes(megabytes)`** — See source. `convertMegabytesToGigabytes(1536) // 1.5`
-- **`convertTerabytesToBytes(terabytes)`** — See source. `convertTerabytesToBytes(1) // 1099511627776`
-- **`formatBytes(bytes, decimals = 2 = 2)`** — Picks the largest unit the value fits into and formats it for display. `formatBytes(1572864) // "1.50 MB"`
+- **`convertBytesToGigabytes(bytes)`** — Converts bytes to gigabytes (base 1024), without rounding. `convertBytesToGigabytes(1073741824) // 1`
+- **`convertBytesToKilobytes(bytes)`** — Converts bytes to kilobytes (base 1024), without rounding. `convertBytesToKilobytes(2048) // 2`
+- **`convertBytesToMegabytes(bytes)`** — Converts bytes to megabytes (base 1024), without rounding. `convertBytesToMegabytes(1048576) // 1`
+- **`convertBytesToTerabytes(bytes)`** — Converts bytes to terabytes (base 1024), without rounding. `convertBytesToTerabytes(1099511627776) // 1`
+- **`convertGigabytesToBytes(gigabytes)`** — Converts gigabytes to bytes (base 1024), without rounding. `convertGigabytesToBytes(1) // 1073741824`
+- **`convertGigabytesToMegabytes(gigabytes)`** — Converts gigabytes to megabytes (base 1024), without rounding. `convertGigabytesToMegabytes(1.5) // 1536`
+- **`convertKilobytesToBytes(kilobytes)`** — Converts kilobytes to bytes (base 1024), without rounding. `convertKilobytesToBytes(2) // 2048`
+- **`convertMegabytesToBytes(megabytes)`** — Converts megabytes to bytes (base 1024), without rounding. `convertMegabytesToBytes(1) // 1048576`
+- **`convertMegabytesToGigabytes(megabytes)`** — Converts megabytes to gigabytes (base 1024), without rounding. `convertMegabytesToGigabytes(1536) // 1.5`
+- **`convertTerabytesToBytes(terabytes)`** — Converts terabytes to bytes (base 1024), without rounding. `convertTerabytesToBytes(1) // 1099511627776`
+- **`formatBytes(bytes, decimals = 2)`** — Picks the largest unit the value fits into and formats it for display. `formatBytes(1572864) // "1.50 MB"`
 - **`getStoragePercent(used, limit)`** — How much of a quota is used, as a whole percentage. `getStoragePercent(512, 1024) // 50`
 - **`getUsageLevel(percent, thresholds)`** — Buckets a usage percentage into a band, so the caller maps the band to its own colours. `getUsageLevel(95) // "critical"`
 - **`parseSizeToBytes(size)`** — Parses a human-written size back into bytes. `parseSizeToBytes("1.5 MB") // 1572864`
@@ -116,11 +119,11 @@ const url = buildCloudinaryUrl({ cloudName, publicId, transform: "w_800,q_auto,f
 - **`buildCloudinaryPublicId(segments)`** — Joins path segments into a Cloudinary `public_id`, dropping empties and replacing the characters Cloudinary treats specially in a URL. `buildCloudinaryPublicId(["events", eventId, photoId]) // "events/ev_1/ph_2"`
 - **`buildCloudinaryResizedUrl(url, width)`** — The image at a given width. `buildCloudinaryResizedUrl(url, 768) // ".../upload/w_768,c_limit,q_auto,f_auto,dpr_auto/..."`
 - **`buildCloudinarySrcset(url, widths = DEFAULT_RESPONSIVE_WIDTHS)`** — A `srcset` value covering the given widths. `buildCloudinarySrcset(url) // ".../w_480/... 480w, .../w_768/... 768w, …"`
-- **`buildCloudinaryUrlVariants()`** — Builds one URL per named transform, so a caller derives a whole set of variants from a single public id in one call.
+- **`buildCloudinaryUrlVariants(options)`** — Builds one URL per named transform, so a caller derives a whole set of variants from a single public id in one call.
 - **`buildCloudinaryUrl(options)`** — Builds a delivery URL from its parts.
 - **`DEFAULT_RESPONSIVE_WIDTHS`** — The widths a responsive image ladder covers by default — roughly phone, tablet, laptop, desktop, and large desktop at 1x.
 - **`extractPublicIdFromCloudinaryUrl(url)`** — Recovers the `public_id` from a delivery URL — the inverse of `buildCloudinaryUrl`.
-- **`isCloudinaryUrl(url)`** — See source. `isCloudinaryUrl("https://res.cloudinary.com/demo/image/upload/a.jpg") // true`
+- **`isCloudinaryUrl(url)`** — Checks whether a URL is served from the Cloudinary delivery host (res.cloudinary.com). `isCloudinaryUrl("https://res.cloudinary.com/demo/image/upload/a.jpg") // true`
 
 Types: `CloudinaryAssetType`, `BuildCloudinaryUrlOptions`
 
@@ -136,7 +139,7 @@ searchCountriesByName(query); // filter a country picker as the user types
 <details>
 <summary>All 5 exports</summary>
 
-- **`COUNTRIES_LIST`** — See source.
+- **`COUNTRIES_LIST`** — All 250 countries and territories, sorted by name — the name, flag emoji, ISO 3166-1 alpha-2 code, and international dial code of each.
 - **`getCountryByCode(code)`** — Looks a country up by its ISO 3166-1 alpha-2 code, case-insensitively. `getCountryByCode("NG")?.name // "Nigeria"`
 - **`getCountryByDialCode(dialCode)`** — Looks a country up by its international dial code, with or without the `+`. `getCountryByDialCode("+234")?.code // "NG"`
 - **`getCountryByName(name)`** — Looks a country up by its full name, case-insensitively and trimmed. `getCountryByName("nigeria")?.code // "NG"`
@@ -169,7 +172,7 @@ const amount = parseCurrencyString(input); // number | null — "free" is not 0
 - **`getCurrencyFractionDigits(currency)`** — How many minor-unit digits a currency has — 2 for NGN and USD, 0 for JPY, 3 for KWD. `getCurrencyFractionDigits("NGN") // 2`
 - **`getCurrencySymbol(currency, locale)`** — The symbol a currency renders with — resolved from Intl, not a hand-kept map. `getCurrencySymbol("NGN") // "₦"`
 - **`getCurrencyTaxAmount(price, taxRate)`** — The tax portion of a price, given a rate. `getCurrencyTaxAmount(100, 7.5) // 7.5`
-- **`getRoundedCurrencyAmount(amount, fractionDigits = 2 = 2)`** — Rounds a main-unit amount to a currency-sensible number of decimals — the half-up rounding a customer expects on a receipt. `getRoundedCurrencyAmount(12.3456) // 12.35`
+- **`getRoundedCurrencyAmount(amount, fractionDigits = 2)`** — Rounds a main-unit amount to a currency-sensible number of decimals — the half-up rounding a customer expects on a receipt. `getRoundedCurrencyAmount(12.3456) // 12.35`
 - **`isValidCurrencyAmount(amount)`** — Whether a value is a finite, non-negative number — the minimum bar for an amount of money a form should accept. `isValidCurrencyAmount(-1) // false`
 - **`isValidCurrencyString(value)`** — Whether a string parses to a valid non-negative amount. `isValidCurrencyString("₦1,200.50") // true`
 - **`parseCurrencyString(value)`** — Parses a currency-looking string into a number, handling both the US style (`1,234.50`) and the European style (`1.234,50`). `parseCurrencyString("₦1,234.50") // 1234.5`
@@ -190,18 +193,18 @@ getTodayISODate(); // local calendar date, never UTC-shifted
 - **`addDaysToDate(date, days)`** — Adds days to a date. `addDaysToDate(new Date("2024-01-01"), 5) // Date for 2024-01-06`
 - **`addDaysToISODate(isoString, days)`** — Adds days to an ISO date string and returns a new ISO string. `addDaysToISODate("2024-01-15T00:00:00.000Z", 5) // "2024-01-20T00:00:00.000Z"`
 - **`addDaysToMillis(millis, days)`** — Adds days to a milliseconds timestamp. `addDaysToMillis(1705276800000, 5) // 5 days later in millis`
-- **`addHoursToDate(date, hours)`** — See source. `addHoursToDate(new Date("2024-01-15T10:00:00"), 3) // 2024-01-15T13:00:00`
-- **`addHoursToISODate(isoString, hours)`** — See source. `addHoursToISODate("2024-01-15T10:00:00.000Z", 3) // "2024-01-15T13:00:00.000Z"`
+- **`addHoursToDate(date, hours)`** — Adds hours to a Date. `addHoursToDate(new Date("2024-01-15T10:00:00"), 3) // 2024-01-15T13:00:00`
+- **`addHoursToISODate(isoString, hours)`** — Adds hours to an ISO date string and returns a new ISO string. `addHoursToISODate("2024-01-15T10:00:00.000Z", 3) // "2024-01-15T13:00:00.000Z"`
 - **`addHoursToMillis(millis, hours)`** — Adds hours to a milliseconds timestamp. `addHoursToMillis(1705276800000, 3) // 3 hours later in millis`
-- **`addMinutesToDate(date, minutes)`** — See source. `addMinutesToDate(new Date("2024-01-15T10:00:00"), 30) // 2024-01-15T10:30:00`
-- **`addMinutesToISODate(isoString, minutes)`** — See source. `addMinutesToISODate("2024-01-15T10:00:00.000Z", 30) // "2024-01-15T10:30:00.000Z"`
+- **`addMinutesToDate(date, minutes)`** — Adds minutes to a Date. `addMinutesToDate(new Date("2024-01-15T10:00:00"), 30) // 2024-01-15T10:30:00`
+- **`addMinutesToISODate(isoString, minutes)`** — Adds minutes to an ISO date string and returns a new ISO string. `addMinutesToISODate("2024-01-15T10:00:00.000Z", 30) // "2024-01-15T10:30:00.000Z"`
 - **`addMinutesToMillis(millis, minutes)`** — Adds minutes to a milliseconds timestamp. `addMinutesToMillis(1705276800000, 30) // 30 minutes later in millis`
 - **`addMonthsToDate(date, months)`** — Adds months, clamping to the last day when the target month is shorter — Jan 31 + 1 month is Feb 29/28, not Mar 2/3 the way a raw `setMonth` overflows. `addMonthsToDate(new Date("2024-01-31"), 1) // Date for 2024-02-29`
 - **`addMonthsToISODate(isoString, months)`** — Adds calendar months to an ISO string, with the same last-day clamping as `addMonthsToDate` — Jan 31 + 1 month is the end of February, never March 2. `addMonthsToISODate("2024-01-31T00:00:00.000Z", 1) // "2024-02-29T00:00:00.000Z"`
 - **`addMonthsToMillis(millis, months)`** — Adds calendar months to a millis timestamp — the operation behind "one month from now" on a subscription. `addMonthsToMillis(Date.UTC(2024, 0, 31), 1) // Date.UTC(2024, 1, 29)`
 - **`addYearsToDate(date, years)`** — Adds years, clamping Feb 29 to Feb 28 in a non-leap target year rather than overflowing to Mar 1. `addYearsToDate(new Date("2024-02-29"), 1) // Date for 2025-02-28`
-- **`addYearsToISODate(isoString, years)`** — See source. `addYearsToISODate("2024-02-29T00:00:00.000Z", 1) // "2025-02-28T00:00:00.000Z"`
-- **`addYearsToMillis(millis, years)`** — See source. `addYearsToMillis(Date.UTC(2024, 1, 29), 1) // Date.UTC(2025, 1, 28)`
+- **`addYearsToISODate(isoString, years)`** — Adds calendar years to an ISO date string and returns a new ISO string, clamping Feb 29 to Feb 28 in a non-leap target year. `addYearsToISODate("2024-02-29T00:00:00.000Z", 1) // "2025-02-28T00:00:00.000Z"`
+- **`addYearsToMillis(millis, years)`** — Adds calendar years to a milliseconds timestamp, clamping Feb 29 to Feb 28 in a non-leap target year. `addYearsToMillis(Date.UTC(2024, 1, 29), 1) // Date.UTC(2025, 1, 28)`
 - **`compareDates(dateA, dateB)`** — Comparator for sorting Dates — `dates.sort(compareDates)` ascends. `[b, a].sort(compareDates) // [a, b] when a is earlier`
 - **`compareISODates(isoA, isoB)`** — Compares two ISO date strings. `compareISODates("2024-01-15", "2024-01-16") // -1`
 - **`convertDateToISOString(date)`** — Converts a Date object to a full ISO 8601 string. `convertDateToISOString(new Date()) // "2024-01-15T10:30:00.000Z"`
@@ -222,31 +225,31 @@ getTodayISODate(); // local calendar date, never UTC-shifted
 - **`formatISOToOrdinalDate(isoString)`** — Formats an ISO string to an ordinal date (e.g., `22nd Jun, 2023`). `formatISOToOrdinalDate("2023-06-22") // "22nd Jun, 2023"`
 - **`formatISOToReadableDateTime(isoString, locale = "en-US")`** — Formats an ISO string to a readable date and time. `formatISOToReadableDateTime("2024-01-15T10:30:00.000Z") // "January 15, 2024, 10:30 AM"`
 - **`formatISOToReadableDate(isoString, locale = "en-US", options)`** — Formats an ISO string to a readable date. `formatISOToReadableDate("2024-01-15T10:30:00.000Z") // "January 15, 2024"`
-- **`formatISOToRelativeShort(isoString)`** — See source. `formatISOToRelativeShort(new Date(Date.now() - 300_000).toISOString()) // "5m ago"`
+- **`formatISOToRelativeShort(isoString)`** — Formats an ISO date string as a short relative time like "5m ago", returning an empty string for invalid input. `formatISOToRelativeShort(new Date(Date.now() - 300_000).toISOString()) // "5m ago"`
 - **`formatISOToRelative(isoString, locale)`** — Relative time from an ISO string — one implementation for the whole package, so the Date and ISO versions can never drift apart. `formatISOToRelative(new Date(Date.now() - 7_200_000).toISOString()) // "2 hours ago"`
 - **`formatISOToShortDate(isoString, locale = "en-US")`** — Formats an ISO string to a short date. `formatISOToShortDate("2024-01-15T10:30:00.000Z") // "1/15/24"`
 - **`formatMillisToIsoDate(millis)`** — The LOCAL calendar date of a millis timestamp as YYYY-MM-DD — same local-not-UTC rule as `formatDateToIsoDate`. `formatMillisToIsoDate(new Date(2024, 0, 15).getTime()) // "2024-01-15"`
 - **`formatMillisToReadableDateTime(millis, locale = "en-US")`** — Formats milliseconds as a readable date and time string. `formatMillisToReadableDateTime(1705276800000) // "January 15, 2024, 12:00 AM"`
 - **`formatMillisToReadableDate(millis, locale = "en-US", options)`** — Formats milliseconds as a readable date string. `formatMillisToReadableDate(1705276800000) // "January 15, 2024"`
-- **`formatMillisToRelativeShort(millis)`** — See source. `formatMillisToRelativeShort(Date.now() - 300_000) // "5m ago"`
-- **`formatMillisToRelative(millis, locale)`** — See source. `formatMillisToRelative(Date.now() - 7_200_000) // "2 hours ago"`
-- **`formatMillisToShortDate(millis, locale)`** — See source. `formatMillisToShortDate(new Date(2024, 0, 15).getTime(), "en-US") // "1/15/24"`
+- **`formatMillisToRelativeShort(millis)`** — Formats a milliseconds timestamp as a short relative time like "5m ago", returning an empty string for non-finite input. `formatMillisToRelativeShort(Date.now() - 300_000) // "5m ago"`
+- **`formatMillisToRelative(millis, locale)`** — Formats a milliseconds timestamp as a relative time like "2 hours ago", returning an empty string for non-finite input. `formatMillisToRelative(Date.now() - 7_200_000) // "2 hours ago"`
+- **`formatMillisToShortDate(millis, locale)`** — Formats a milliseconds timestamp as a locale-aware short date like "1/15/24". `formatMillisToShortDate(new Date(2024, 0, 15).getTime(), "en-US") // "1/15/24"`
 - **`getCurrentDate()`** — Now, as a Date — completes the trio with `getCurrentISOString` and `getCurrentMillis`, so code written against this package stays in one vocabulary. `getCurrentDate() // Date for now`
 - **`getCurrentISOString()`** — Gets the current date/time as a full ISO string. `getCurrentISOString() // "2024-01-15T10:30:00.000Z"`
 - **`getCurrentMillis()`** — Gets the current time in milliseconds. `getCurrentMillis() // 1705276800000`
-- **`getCurrentYear()`** — The current full year, evaluated when called — the old module-load constant went stale in any process that crossed New Year. `getCurrentYear() // 2026`
+- **`getCurrentYear()`** — The current full year, evaluated when called — never cache it in a module-level constant, which goes stale in any process that crosses New Year. `getCurrentYear() // 2026`
 - **`getDaysBetweenDates(dateA, dateB)`** — Whole calendar days between two dates, always positive. `getDaysBetweenDates(new Date("2024-01-01"), new Date("2024-01-15")) // 14`
 - **`getDaysDifferenceFromISO(isoA, isoB)`** — Whole calendar days between two ISO strings, always positive. `getDaysDifferenceFromISO("2024-01-15", "2024-01-20") // 5`
 - **`getEndOfDayMillis(millis)`** — Gets the end of day (23:59:59.999) for a milliseconds timestamp. `getEndOfDayMillis(1705300000000) // End-of-day millis`
 - **`getEndOfDay(date)`** — Returns the end of the given day (23:59:59.999). `getEndOfDay(new Date("2024-01-15T15:30:00")) // 2024-01-15T23:59:59.999`
-- **`getEndOfMonthMillis(millis)`** — See source. `getEndOfMonthMillis(new Date(2024, 0, 15).getTime()) // millis of Jan 31 23:59:59.999`
+- **`getEndOfMonthMillis(millis)`** — Returns the milliseconds timestamp of the last instant of the month containing the given timestamp, in local time. `getEndOfMonthMillis(new Date(2024, 0, 15).getTime()) // millis of Jan 31 23:59:59.999`
 - **`getEndOfMonth(date)`** — Returns the end of the given month (last day at 23:59:59.999). `getEndOfMonth(new Date("2024-01-15")) // 2024-01-31T23:59:59.999`
 - **`getEndOfTodayMillis()`** — Gets the end of today in milliseconds. `getEndOfTodayMillis() // End-of-today millis`
 - **`getMillisDifference(startMillis, endMillis, unit = "milliseconds")`** — Gets the absolute difference between two milliseconds timestamps in the requested unit. `getMillisDifference(start, end, "days") // 5`
 - **`getNextWeekdayDate(weekday, from = new Date())`** — The next date falling on the given weekday, on or after `from` (today by default). `getNextWeekdayDate(5) // the coming Friday, or today if today is Friday`
 - **`getStartOfDayMillis(millis)`** — Gets the start of day (00:00:00.000) for a milliseconds timestamp. `getStartOfDayMillis(1705300000000) // Start-of-day millis`
 - **`getStartOfDay(date)`** — Returns the start of the given day (00:00:00.000). `getStartOfDay(new Date("2024-01-15T15:30:00")) // 2024-01-15T00:00:00.000`
-- **`getStartOfMonthMillis(millis)`** — See source. `getStartOfMonthMillis(new Date(2024, 0, 15).getTime()) // millis of Jan 1 00:00:00.000`
+- **`getStartOfMonthMillis(millis)`** — Returns the milliseconds timestamp of the first instant of the month containing the given timestamp, in local time. `getStartOfMonthMillis(new Date(2024, 0, 15).getTime()) // millis of Jan 1 00:00:00.000`
 - **`getStartOfMonth(date)`** — Returns the start of the given month (first day at 00:00:00.000). `getStartOfMonth(new Date("2024-01-15")) // 2024-01-01T00:00:00.000`
 - **`getStartOfTodayMillis()`** — Gets the start of today in milliseconds. `getStartOfTodayMillis() // Start-of-today millis`
 - **`getTodayISODate()`** — Today's LOCAL calendar date as YYYY-MM-DD — not the UTC date, which is a different day for part of every timezone's evening or morning. `getTodayISODate() // "2026-08-16"`
@@ -257,10 +260,10 @@ getTodayISODate(); // local calendar date, never UTC-shifted
 - **`isISODateBefore(isoA, isoB)`** — Checks whether one ISO date string is strictly before another. `isISODateBefore("2024-01-15", "2024-01-16") // true`
 - **`isISODateInFuture(isoString)`** — Checks whether an ISO date string is in the future. `isISODateInFuture("2030-01-15T00:00:00.000Z") // true`
 - **`isISODateInPast(isoString)`** — Checks whether an ISO date string is in the past. `isISODateInPast("2020-01-15T00:00:00.000Z") // true`
-- **`isISODateToday(isoString)`** — See source. `isISODateToday(new Date().toISOString()) // true`
+- **`isISODateToday(isoString)`** — Checks whether an ISO date string falls on today's local date. `isISODateToday(new Date().toISOString()) // true`
 - **`isMillisInFuture(millis)`** — Checks whether a milliseconds timestamp is in the future. `isMillisInFuture(1893456000000) // true`
 - **`isMillisInPast(millis)`** — Checks whether a milliseconds timestamp is in the past. `isMillisInPast(1705276800000) // true`
-- **`isMillisToday(millis)`** — See source. `isMillisToday(Date.now()) // true`
+- **`isMillisToday(millis)`** — Checks whether a milliseconds timestamp falls on today's local date. `isMillisToday(Date.now()) // true`
 - **`isValidDate(date)`** — Type guard for valid `Date` instances. `isValidDate(new Date("invalid")) // false`
 - **`isValidISODateString(str)`** — Checks whether a string is a valid ISO 8601 date-time string. `isValidISODateString("2024-01-15T10:30:00.000Z") // true`
 - **`isValidISODate(str)`** — Checks whether a string is a valid YYYY-MM-DD ISO date. `isValidISODate("2024-01-15") // true`
@@ -270,21 +273,21 @@ getTodayISODate(); // local calendar date, never UTC-shifted
 - **`MILLIS_PER_HOUR`** — Milliseconds in one hour.
 - **`MILLIS_PER_DAY`** — Milliseconds in one day.
 - **`MILLIS_PER_WEEK`** — Milliseconds in one week.
-- **`subtractDaysFromDate(date, days)`** — See source. `subtractDaysFromDate(new Date("2024-01-15"), 5) // Date for 2024-01-10`
-- **`subtractDaysFromISODate(isoString, days)`** — See source. `subtractDaysFromISODate("2024-01-15T00:00:00.000Z", 5) // "2024-01-10T00:00:00.000Z"`
-- **`subtractDaysFromMillis(millis, days)`** — See source. `subtractDaysFromMillis(millis, 5) // 5 × 24h earlier`
-- **`subtractHoursFromDate(date, hours)`** — See source. `subtractHoursFromDate(date, 2) // 2 hours earlier`
-- **`subtractHoursFromISODate(isoString, hours)`** — See source. `subtractHoursFromISODate(isoString, 2) // 2 hours earlier`
-- **`subtractHoursFromMillis(millis, hours)`** — See source. `subtractHoursFromMillis(millis, 2) // 2 hours earlier`
-- **`subtractMinutesFromDate(date, minutes)`** — See source. `subtractMinutesFromDate(date, 2) // 2 minutes earlier`
-- **`subtractMinutesFromISODate(isoString, minutes)`** — See source. `subtractMinutesFromISODate(isoString, 2) // 2 minutes earlier`
-- **`subtractMinutesFromMillis(millis, minutes)`** — See source. `subtractMinutesFromMillis(millis, 2) // 2 minutes earlier`
-- **`subtractMonthsFromDate(date, months)`** — See source. `subtractMonthsFromDate(date, 2) // 2 months earlier`
-- **`subtractMonthsFromISODate(isoString, months)`** — See source. `subtractMonthsFromISODate(isoString, 2) // 2 months earlier`
-- **`subtractMonthsFromMillis(millis, months)`** — See source. `subtractMonthsFromMillis(millis, 2) // 2 months earlier`
-- **`subtractYearsFromDate(date, years)`** — See source. `subtractYearsFromDate(date, 2) // 2 years earlier`
-- **`subtractYearsFromISODate(isoString, years)`** — See source. `subtractYearsFromISODate(isoString, 2) // 2 years earlier`
-- **`subtractYearsFromMillis(millis, years)`** — See source. `subtractYearsFromMillis(millis, 2) // 2 years earlier`
+- **`subtractDaysFromDate(date, days)`** — Subtracts days from a Date. `subtractDaysFromDate(new Date("2024-01-15"), 5) // Date for 2024-01-10`
+- **`subtractDaysFromISODate(isoString, days)`** — Subtracts days from an ISO date string and returns a new ISO string. `subtractDaysFromISODate("2024-01-15T00:00:00.000Z", 5) // "2024-01-10T00:00:00.000Z"`
+- **`subtractDaysFromMillis(millis, days)`** — Subtracts days from a milliseconds timestamp. `subtractDaysFromMillis(millis, 5) // 5 × 24h earlier`
+- **`subtractHoursFromDate(date, hours)`** — Subtracts hours from a Date. `subtractHoursFromDate(date, 2) // 2 hours earlier`
+- **`subtractHoursFromISODate(isoString, hours)`** — Subtracts hours from an ISO date string and returns a new ISO string. `subtractHoursFromISODate(isoString, 2) // 2 hours earlier`
+- **`subtractHoursFromMillis(millis, hours)`** — Subtracts hours from a milliseconds timestamp. `subtractHoursFromMillis(millis, 2) // 2 hours earlier`
+- **`subtractMinutesFromDate(date, minutes)`** — Subtracts minutes from a Date. `subtractMinutesFromDate(date, 2) // 2 minutes earlier`
+- **`subtractMinutesFromISODate(isoString, minutes)`** — Subtracts minutes from an ISO date string and returns a new ISO string. `subtractMinutesFromISODate(isoString, 2) // 2 minutes earlier`
+- **`subtractMinutesFromMillis(millis, minutes)`** — Subtracts minutes from a milliseconds timestamp. `subtractMinutesFromMillis(millis, 2) // 2 minutes earlier`
+- **`subtractMonthsFromDate(date, months)`** — Subtracts calendar months from a Date, clamping to the last day when the target month is shorter. `subtractMonthsFromDate(date, 2) // 2 months earlier`
+- **`subtractMonthsFromISODate(isoString, months)`** — Subtracts calendar months from an ISO date string and returns a new ISO string, clamping to the last day when the target month is shorter. `subtractMonthsFromISODate(isoString, 2) // 2 months earlier`
+- **`subtractMonthsFromMillis(millis, months)`** — Subtracts calendar months from a milliseconds timestamp, clamping to the last day when the target month is shorter. `subtractMonthsFromMillis(millis, 2) // 2 months earlier`
+- **`subtractYearsFromDate(date, years)`** — Subtracts calendar years from a Date, clamping Feb 29 to Feb 28 in a non-leap target year. `subtractYearsFromDate(date, 2) // 2 years earlier`
+- **`subtractYearsFromISODate(isoString, years)`** — Subtracts calendar years from an ISO date string and returns a new ISO string, clamping Feb 29 to Feb 28 in a non-leap target year. `subtractYearsFromISODate(isoString, 2) // 2 years earlier`
+- **`subtractYearsFromMillis(millis, years)`** — Subtracts calendar years from a milliseconds timestamp, clamping Feb 29 to Feb 28 in a non-leap target year. `subtractYearsFromMillis(millis, 2) // 2 years earlier`
 
 </details>
 
@@ -304,10 +307,10 @@ catch (error) {
 - **`formatError(error, options)`** — One displayable string from an error of any shape — HTTP-like, Firebase-shaped, `Error`, or a bare string. `formatError(err) // "Request failed: /events"`
 - **`getErrorMessage(error)`** — A displayable message from an unknown error, drilling into `response.data.{message,error,errors}` when present. `getErrorMessage(err) // "Event not found"`
 - **`getErrorRetryAfterSeconds(error)`** — The Retry-After delay of a 429 response, in whole seconds — the header first, then a structured `response.data.error.details.retryAfter` fallback. `getErrorRetryAfterSeconds(err) // 30`
-- **`getErrorStatusCode(error)`** — See source. `getErrorStatusCode(err) // 404`
-- **`hasErrorStatusCode(error, statusCode)`** — See source. `hasErrorStatusCode(err, 404) // true`
-- **`isError(value)`** — See source. `isError(new Error("oops")) // true`
-- **`isHttpError(error)`** — See source. `isHttpError({ response: { status: 404 } }) // true`
+- **`getErrorStatusCode(error)`** — Reads the HTTP status code from an HTTP-shaped error, preferring `response.status` over `status`, and returns `undefined` for anything that is not one. `getErrorStatusCode(err) // 404`
+- **`hasErrorStatusCode(error, statusCode)`** — Checks whether an error carries a specific HTTP status code. `hasErrorStatusCode(err, 404) // true`
+- **`isError(value)`** — Narrows an unknown value to `Error` via `instanceof`. `isError(new Error("oops")) // true`
+- **`isHttpError(error)`** — Narrows an unknown value to an HTTP-shaped error — anything carrying a numeric `status`, a `response.status`, or an `isAxiosError` flag. `isHttpError({ response: { status: 404 } }) // true`
 - **`isMaintenanceError(error, options)`** — Whether an error means "the platform is deliberately down", so an error boundary can render the maintenance page instead of "Something went wrong". `isMaintenanceError(err) // true`
 
 Types: `HttpErrorLikeProps`
@@ -374,7 +377,7 @@ const otp = generateNumericCode(6); // crypto-random too — users redeem these
 <summary>All 8 exports</summary>
 
 - **`generateNumericCode(length)`** — A random numeric code — an OTP, a verification code. `generateNumericCode(6) // "482913"`
-- **`generateRandomString(length = 8 = 8)`** — A random alphanumeric string. `generateRandomString(8) // "aB3dE9fG"`
+- **`generateRandomString(length = 8)`** — A random alphanumeric string. `generateRandomString(8) // "aB3dE9fG"`
 - **`generateReadableCode(length = 8, groupSize = 4, separator = "-")`** — Generates a human-readable code (uppercase + digits, ambiguous chars excluded) grouped with a separator — suitable for share-with-attendee codes like album passcodes. `generateReadableCode() // "K3F7-9TXM"`
 - **`generateTransactionRef(uid)`** — A reference combining the tail of an id with a random suffix — traceable to its owner at a glance, unique enough not to collide. `generateTransactionRef("user12345678") // "12345678-aB3dE9fG"`
 - **`generateUuid()`** — A UUID v4 via the runtime's `crypto.randomUUID` — no library. `generateUuid() // "550e8400-e29b-41d4-a716-446655440000"`
@@ -396,28 +399,28 @@ maskString(cardNumber); // "••••••••••••4242"
 <summary>All 23 exports</summary>
 
 - **`capitalizeString(value)`** — Upper-cases the first character and leaves the rest alone. `capitalizeString("hello") // "Hello"`
-- **`convertStringToCamelCase(value)`** — See source. `convertStringToCamelCase("hello world") // "helloWorld"`
-- **`convertStringToKebabCase(value)`** — See source. `convertStringToKebabCase("HelloWorld") // "hello-world"`
-- **`convertStringToSnakeCase(value)`** — See source. `convertStringToSnakeCase("HelloWorld") // "hello_world"`
+- **`convertStringToCamelCase(value)`** — Converts a string to camelCase, keeping digits attached to their word ("v2 rollout" becomes "v2Rollout"). `convertStringToCamelCase("hello world") // "helloWorld"`
+- **`convertStringToKebabCase(value)`** — Converts a string to kebab-case, keeping digits attached to their word ("v2 Rollout" becomes "v2-rollout"). `convertStringToKebabCase("HelloWorld") // "hello-world"`
+- **`convertStringToSnakeCase(value)`** — Converts a string to snake_case, keeping digits attached to their word ("v2 Rollout" becomes "v2_rollout"). `convertStringToSnakeCase("HelloWorld") // "hello_world"`
 - **`convertStringToTitleCase(value)`** — Title-cases every word, splitting on camelCase humps as well as spaces. `convertStringToTitleCase("hello world") // "Hello World"`
-- **`convertStringToUpperSnakeCase(value)`** — See source. `convertStringToUpperSnakeCase("my new flag") // "MY_NEW_FLAG"`
-- **`countWordsInString(value)`** — See source. `countWordsInString("hello world") // 2`
+- **`convertStringToUpperSnakeCase(value)`** — Converts a string to UPPER_SNAKE_CASE, keeping digits attached to their word and stripping any character that is not A-Z, 0-9, or underscore. `convertStringToUpperSnakeCase("my new flag") // "MY_NEW_FLAG"`
+- **`countWordsInString(value)`** — Counts the whitespace-separated words in a string, returning 0 for empty or blank input. `countWordsInString("hello world") // 2`
 - **`createSlugFromNameAndId(name, id)`** — Builds a `name-id` URL slug. `createSlugFromNameAndId(" Summer  Fête! ", "a1b2") // "summer-fete-a1b2"`
 - **`decodeBase64Url(value)`** — Decodes a base64url string — base64 with `-`/`_` instead of `+`/`/`, and padding dropped. `decodeBase64Url("eyJhIjoxfQ") // '{"a":1}'`
 - **`encodeBase64Url(value)`** — Encodes a string as base64url — base64 with `-`/`_` instead of `+`/`/` and no padding, the encoding JWT segments and URL-safe tokens use. `encodeBase64Url('{"a":1}') // "eyJhIjoxfQ"`
-- **`extractIdFromSlug(slug)`** — See source. `extractIdFromSlug("summer-fete-a1b2") // "a1b2"`
-- **`extractNameFromSlug(slug)`** — See source. `extractNameFromSlug("summer-fete-a1b2") // "summer fete"`
+- **`extractIdFromSlug(slug)`** — Returns the segment after the last hyphen of a URL-decoded slug — the id in `name-id` slugs. `extractIdFromSlug("summer-fete-a1b2") // "a1b2"`
+- **`extractNameFromSlug(slug)`** — Returns everything before the last hyphen of a URL-decoded slug with hyphens turned into spaces — the name in `name-id` slugs. `extractNameFromSlug("summer-fete-a1b2") // "summer fete"`
 - **`extractSocialUsername(value)`** — Pulls a handle out of whatever a user pasted into a "social link" field — a full URL, a bare `@handle`, or the handle alone. `extractSocialUsername("https://instagram.com/timonwa/") // "timonwa"`
 - **`extractUuidFromPath(path)`** — Pulls the first UUID out of a path or key. `extractUuidFromPath("/f/3f2504e0-4f89-11d3-9a0c-0305e82c3301/raw/a.jpg")`
 - **`humanizeConstant(value)`** — Turns a CONSTANT_NAME into a sentence-cased label. `humanizeConstant("arts_and_culture") // "Arts and culture"`
 - **`isStringPalindrome(value)`** — Whether a string reads the same both ways, ignoring case and anything that is not a letter or digit — so "A man, a plan, a canal: Panama" qualifies. `isStringPalindrome("racecar") // true`
-- **`maskString(value, visibleCharacters = 4 = 4)`** — Hides all but the trailing characters of a sensitive value. `maskString("4242424242424242") // "••••••••••••4242"`
-- **`normalizeStringWhitespace(value)`** — See source. `normalizeStringWhitespace("hello    world ") // "hello world"`
+- **`maskString(value, visibleCharacters = 4)`** — Hides all but the trailing characters of a sensitive value. `maskString("4242424242424242") // "••••••••••••4242"`
+- **`normalizeStringWhitespace(value)`** — Collapses every run of whitespace into a single space and trims the ends. `normalizeStringWhitespace("hello    world ") // "hello world"`
 - **`reverseString(value)`** — Reverses a string by code point, so astral characters survive. `reverseString("hello") // "olleh"`
 - **`splitFullName(fullName)`** — Splits a full name into a first name and everything after it. `splitFullName("Ada Lovelace") // { firstName: "Ada", lastName: "Lovelace" }`
 - **`stripHtmlTagsFromString(value)`** — Removes anything that looks like a tag, for producing a plain-text excerpt. `stripHtmlTagsFromString("<p>Hello</p>") // "Hello"`
 - **`stripToAlphanumeric(value)`** — Reduces a string to lowercase letters and digits, for use as a comparison key. `stripToAlphanumeric("O'Brien-Smith") // "obriensmith"`
-- **`truncateString(value, maxLength, ellipsis = "…" = "…")`** — Shortens a string to at most `maxLength` characters, ellipsis included. `truncateString("This is a long string", 10) // "This is a…"`
+- **`truncateString(value, maxLength, ellipsis = "…")`** — Shortens a string to at most `maxLength` characters, ellipsis included. `truncateString("This is a long string", 10) // "This is a…"`
 
 </details>
 
@@ -478,23 +481,23 @@ if (hasValidationErrors(results)) show(results);
 <details>
 <summary>All 17 exports</summary>
 
-- **`hasValidationErrors(results)`** — See source. `hasValidationErrors(results) // true when any result is invalid`
+- **`hasValidationErrors(results)`** — Checks whether any result in a list of validation results is invalid. `hasValidationErrors(results) // true when any result is invalid`
 - **`DEFAULT_DOCUMENT_TYPES`** — Word and PDF; pass your product's own list to change the policy.
-- **`validateDocumentFile(file, allowedTypes = DEFAULT_DOCUMENT_TYPES)`** — See source. `validateDocumentFile(file) // { valid: true }`
-- **`validateEmail(email)`** — Format-level email check — something@something.tld. `validateEmail("test@example.com") // { valid: true }`
-- **`validateFileSize(file, maxSizeInMb)`** — See source. `validateFileSize(file, 5) // { valid: true }`
-- **`validateFileType(file, allowedTypes)`** — See source. `validateFileType(file, ["image/png"]) // { valid: true }`
-- **`validateFiles(files, validator)`** — See source. `validateFiles(files, validateImageFile) // one result per file`
+- **`validateDocumentFile(file, allowedTypes = DEFAULT_DOCUMENT_TYPES)`** — Validates a file's MIME type against an allowed list, defaulting to Word and PDF. `validateDocumentFile(file) // { valid: true }`
+- **`validateEmail(email)`** — Format-level email check — `something@something.tld`. `validateEmail("test@example.com") // { valid: true }`
+- **`validateFileSize(file, maxSizeInMb)`** — Validates that a file is no larger than `maxSizeInMb` megabytes. `validateFileSize(file, 5) // { valid: true }`
+- **`validateFileType(file, allowedTypes)`** — Validates a file's MIME type against an explicit list of allowed types. `validateFileType(file, ["image/png"]) // { valid: true }`
+- **`validateFiles(files, validator)`** — Runs one validator over a list of files, returning a result per file. `validateFiles(files, validateImageFile) // one result per file`
 - **`DEFAULT_IMAGE_TYPES`** — The web-safe default; pass your product's own policy to narrow or widen it.
-- **`validateImageFile(file, allowedTypes = DEFAULT_IMAGE_TYPES)`** — See source. `validateImageFile(file) // { valid: true }`
-- **`validateNumberRange(value, min, max, fieldName = "Value" = "Value")`** — See source. `validateNumberRange(5, 1, 10) // { valid: true }`
+- **`validateImageFile(file, allowedTypes = DEFAULT_IMAGE_TYPES)`** — Validates a file's MIME type against an allowed list, defaulting to the web-safe image set (JPEG, PNG, WebP, GIF). `validateImageFile(file) // { valid: true }`
+- **`validateNumberRange(value, min, max, fieldName = "Value")`** — Validates that a number falls within an inclusive min-max range. `validateNumberRange(5, 1, 10) // { valid: true }`
 - **`validatePassword(password, options)`** — Password rules, each toggleable. `validatePassword("Password123") // { valid: true, messages: [] }`
-- **`validatePdfFile(file)`** — See source. `validatePdfFile(file) // { valid: true }`
+- **`validatePdfFile(file)`** — Validates that a file's MIME type is `application/pdf`. `validatePdfFile(file) // { valid: true }`
 - **`validateRequired(value, fieldName)`** — Non-empty check across the shapes a form produces — `undefined`, `null`, a whitespace-only string, or an empty array all fail. `validateRequired("", "Name") // { valid: false, message: "Name is required" }`
-- **`validateStringLength(value, minLength, maxLength, fieldName = "Field" = "Field")`** — See source. `validateStringLength("hello", 1, 10) // { valid: true }`
-- **`validateUrl(url)`** — See source. `validateUrl("https://example.com") // { valid: true }`
-- **`DEFAULT_VIDEO_TYPES`** — See source.
-- **`validateVideoFile(file, options)`** — See source. `validateVideoFile(file, { maxSizeBytes: 50_000_000 }) // { valid: true }`
+- **`validateStringLength(value, minLength, maxLength, fieldName = "Field")`** — Validates that a string's length falls within an inclusive min-max range. `validateStringLength("hello", 1, 10) // { valid: true }`
+- **`validateUrl(url)`** — Validates that a string parses as an absolute URL via the `URL` constructor. `validateUrl("https://example.com") // { valid: true }`
+- **`DEFAULT_VIDEO_TYPES`** — The web-common defaults (MP4, WebM, Ogg, QuickTime); pass your own list to change the policy.
+- **`validateVideoFile(file, options)`** — Validates a video file's MIME type against an allowed list (defaulting to `DEFAULT_VIDEO_TYPES`) and, when `maxSizeBytes` is set, its size. `validateVideoFile(file, { maxSizeBytes: 50_000_000 }) // { valid: true }`
 
 Types: `ValidatePasswordOptions`
 
@@ -549,9 +552,9 @@ const token = getLocalStorageItemWithExpiry<string>("token"); // undefined once 
 - **`getLocalStorageItem(key, defaultValue)`** — Gets an item from localStorage with JSON parsing. `getLocalStorageItem<User>("user") // { id: 1, name: "John" }`
 - **`getLocalStorageKeys()`** — Gets all keys from localStorage. `getLocalStorageKeys() // ["user", "settings"]`
 - **`getLocalStorageSize()`** — Gets the approximate size of localStorage in bytes (UTF-16 estimate). `getLocalStorageSize() // 1024`
-- **`getSessionStorageItemWithExpiry(key)`** — Expired entries are evicted on access.
+- **`getSessionStorageItemWithExpiry(key)`** — Gets an item from sessionStorage, returning undefined if expired. `getSessionStorageItemWithExpiry<string>("draft")`
 - **`getSessionStorageItem(key, defaultValue)`** — Gets an item from sessionStorage with JSON parsing. `getSessionStorageItem<TempData>("tempData") // { step: 1 }`
-- **`getSessionStorageKeys()`** — See source. `getSessionStorageKeys() // ["checkout-step"]`
+- **`getSessionStorageKeys()`** — Gets all keys from sessionStorage. `getSessionStorageKeys() // ["checkout-step"]`
 - **`getSessionStorageSize()`** — Approximate sessionStorage footprint in bytes (UTF-16 uses 2 bytes per character). `getSessionStorageSize() // 1024`
 - **`hasLocalStorageItem(key)`** — Checks whether a key exists in localStorage. `hasLocalStorageItem("user") // true`
 - **`hasSessionStorageItem(key)`** — Checks whether a key exists in sessionStorage. `hasSessionStorageItem("tempData") // true`
@@ -561,7 +564,7 @@ const token = getLocalStorageItemWithExpiry<string>("token"); // undefined once 
 - **`removeSessionStorageItem(key)`** — Removes an item from sessionStorage. `removeSessionStorageItem("tempData")`
 - **`setLocalStorageItemWithExpiry(key, value, expiryMs)`** — Sets an item in localStorage with an expiry timestamp. `setLocalStorageItemWithExpiry("token", "abc123", 3600000)`
 - **`setLocalStorageItem(key, value)`** — Sets an item in localStorage with JSON serialization. `setLocalStorageItem("user", { id: 1, name: "John" })`
-- **`setSessionStorageItemWithExpiry(key, value, expiryMs)`** — See source. `setSessionStorageItemWithExpiry("draft", data, 3_600_000)`
+- **`setSessionStorageItemWithExpiry(key, value, expiryMs)`** — Sets an item in sessionStorage with an expiry timestamp. `setSessionStorageItemWithExpiry("draft", data, 3_600_000)`
 - **`setSessionStorageItem(key, value)`** — Sets an item in sessionStorage with JSON serialization. `setSessionStorageItem("tempData", { step: 1 })`
 
 </details>

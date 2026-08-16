@@ -8,7 +8,11 @@ export const DEFAULT_DOCUMENT_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ] as const;
 
-/** @example validateDocumentFile(file) // { valid: true } */
+/**
+ * Validates a file's MIME type against an allowed list, defaulting to Word and PDF.
+ *
+ * @example validateDocumentFile(file) // { valid: true }
+ */
 export function validateDocumentFile(
   file: File,
   allowedTypes: readonly string[] = DEFAULT_DOCUMENT_TYPES,

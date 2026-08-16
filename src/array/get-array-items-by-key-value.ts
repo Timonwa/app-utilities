@@ -1,6 +1,10 @@
 import { toArrayView } from "./_shared.js";
 
-/** @example getArrayItemsByKeyValue([{ role: "admin" }, { role: "user" }], "role", "admin") // [{ role: "admin" }] */
+/**
+ * Returns all items whose given key strictly equals the given value.
+ *
+ * @example getArrayItemsByKeyValue([{ role: "admin" }, { role: "user" }], "role", "admin") // [{ role: "admin" }]
+ */
 export function getArrayItemsByKeyValue<T extends Record<string, unknown>>(
   array: T[],
   key: keyof T,

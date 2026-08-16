@@ -1,4 +1,8 @@
-/** @example getSessionStorageKeys() // ["checkout-step"] */
+/**
+ * Gets all keys from sessionStorage.
+ *
+ * @example getSessionStorageKeys() // ["checkout-step"]
+ */
 export function getSessionStorageKeys(): string[] {
   try {
     return Object.keys(sessionStorage);

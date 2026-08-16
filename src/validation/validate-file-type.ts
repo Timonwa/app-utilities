@@ -1,6 +1,10 @@
 import { invalid, VALID, type ValidationResult } from "./_shared.js";
 
-/** @example validateFileType(file, ["image/png"]) // { valid: true } */
+/**
+ * Validates a file's MIME type against an explicit list of allowed types.
+ *
+ * @example validateFileType(file, ["image/png"]) // { valid: true }
+ */
 export function validateFileType(
   file: File,
   allowedTypes: readonly string[],

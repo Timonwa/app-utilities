@@ -1,4 +1,7 @@
-/** @example addMinutesToISODate("2024-01-15T10:00:00.000Z", 30) // "2024-01-15T10:30:00.000Z" */
+/**
+ * Adds minutes to an ISO date string and returns a new ISO string.
+ * @example addMinutesToISODate("2024-01-15T10:00:00.000Z", 30) // "2024-01-15T10:30:00.000Z"
+ */
 export function addMinutesToISODate(isoString: string, minutes: number): string {
   const date = new Date(isoString);
   date.setMinutes(date.getMinutes() + minutes);

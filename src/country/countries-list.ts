@@ -10,18 +10,6 @@
  * maps) are app config, not shipped here.
  */
 
-/**
- * @description Country data and lookups — name, flag emoji, ISO 3166-1 alpha-2 code, and
- * international dial code for all 250 countries and territories, sorted by name. For
- * phone inputs, country selectors, and address forms.
- *
- * The list is `as const`, so `CountryCode` is the union of real codes rather than
- * `string` — a typo like `"XX"` fails at compile time.
- *
- * Product defaults (which country a form preselects, country → currency or timezone
- * maps) are app config, not shipped here.
- */
-
 export interface CountryProps {
   name: string;
   flag: string;
@@ -29,6 +17,9 @@ export interface CountryProps {
   dialCode: string;
 }
 
+/**
+ * All 250 countries and territories, sorted by name — the name, flag emoji, ISO 3166-1 alpha-2 code, and international dial code of each.
+ */
 export const COUNTRIES_LIST = [
   { name: "Afghanistan", flag: "🇦🇫", code: "AF", dialCode: "+93" },
   { name: "Åland Islands", flag: "🇦🇽", code: "AX", dialCode: "+358" },

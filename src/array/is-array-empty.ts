@@ -1,6 +1,10 @@
 import { toArrayView } from "./_shared.js";
 
-/** @example isArrayEmpty([]) // true */
+/**
+ * Checks whether the array has no items.
+ *
+ * @example isArrayEmpty([]) // true
+ */
 export function isArrayEmpty<T>(array: T[]): boolean {
   return toArrayView(array).length === 0;
 }

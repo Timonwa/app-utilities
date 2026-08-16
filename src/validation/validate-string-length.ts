@@ -1,6 +1,10 @@
 import { invalid, VALID, type ValidationResult } from "./_shared.js";
 
-/** @example validateStringLength("hello", 1, 10) // { valid: true } */
+/**
+ * Validates that a string's length falls within an inclusive min-max range.
+ *
+ * @example validateStringLength("hello", 1, 10) // { valid: true }
+ */
 export function validateStringLength(
   value: string,
   minLength: number,

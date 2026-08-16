@@ -10,6 +10,8 @@ export const DEFAULT_IMAGE_TYPES = [
 ] as const;
 
 /**
+ * Validates a file's MIME type against an allowed list, defaulting to the web-safe image set (JPEG, PNG, WebP, GIF).
+ *
  * @example validateImageFile(file) // { valid: true }
  * @example validateImageFile(file, ["image/png"]) // PNG-only policy
  */
