@@ -21,6 +21,8 @@ getUsageLevel(getStoragePercent(used, quota)); // "high" -> map to your own colo
 <img src={buildCloudinaryResizedUrl(url, 768)} srcSet={buildCloudinarySrcset(url)} />`,
   country: `getCountryByCode("NG")?.flag; // "🇳🇬"
 searchCountriesByName(query); // filter a country picker as the user types`,
+  crypto: `if (!isTimingSafeEqual(providedToken, expectedToken)) return notFound(); // no timing leak
+const checksum = await hashTextToSha256Hex(payload); // node, browser, and edge`,
   currency: `formatCurrencyFromMinorUnit(123450, "NGN", { locale: "en-NG" }); // "₦1,234.50"
 const amount = parseCurrencyString(input); // number | null — "free" is not 0`,
   date: `formatDateToRelative(post.createdAt); // "2 hours ago"
@@ -30,6 +32,9 @@ getTodayISODate(); // local calendar date, never UTC-shifted`,
   toast.error(formatError(error, { messageForCode: (c) => AUTH_MESSAGES[c] }));
   if (hasErrorStatusCode(error, 429)) wait(getErrorRetryAfterSeconds(error));
 }`,
+  firestore: `const date = parseFirestoreTimestampToDate(doc.createdAt); // any wire/SDK shape, or null
+events.sort((a, b) => getFirestoreTimestampSortMillis(a.startsAt) - getFirestoreTimestampSortMillis(b.startsAt));
+<input type="datetime-local" value={convertFirestoreTimestampToDateTimeLocal(event.startsAt)} />`,
   form: `const message = findFirstErrorMessage(form.formState.errors); // works at any depth`,
   number: `formatCompactNumber(followers); // "1.5M", localized
 const price = parseStringToNumber(input); // null for "", never 0`,

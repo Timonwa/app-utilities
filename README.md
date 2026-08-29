@@ -40,7 +40,7 @@ That split exists for server rendering as much as for React Native — `localSto
 
 Generated from the source JSDoc by `pnpm docs:api` — CI fails when it is out of date, so what you read here is what the code does. Each module below opens with how you would actually use it; expand the list for every export.
 
-Jump to: [array](#array) · [bytes](#bytes) · [cloudinary](#cloudinary) · [country](#country) · [currency](#currency) · [date](#date) · [error](#error) · [form](#form) · [number](#number) · [random](#random) · [string](#string) · [time](#time) · [url](#url) · [validation](#validation) · [browser/clipboard](#browserclipboard) · [browser/image](#browserimage) · [browser/storage](#browserstorage)
+Jump to: [array](#array) · [bytes](#bytes) · [cloudinary](#cloudinary) · [country](#country) · [crypto](#crypto) · [currency](#currency) · [date](#date) · [error](#error) · [firestore](#firestore) · [form](#form) · [number](#number) · [random](#random) · [string](#string) · [time](#time) · [url](#url) · [validation](#validation) · [browser/clipboard](#browserclipboard) · [browser/image](#browserimage) · [browser/storage](#browserstorage)
 
 ### Universal — `@timonwa/app-utilities`
 
@@ -146,6 +146,21 @@ searchCountriesByName(query); // filter a country picker as the user types
 - **`searchCountriesByName(query)`** — All countries whose name contains the query, case-insensitively — for filtering a country picker as the user types. `searchCountriesByName("guinea").length // 4`
 
 Types: `CountryProps`, `CountryCode`
+
+</details>
+
+### `crypto`
+
+```ts
+if (!isTimingSafeEqual(providedToken, expectedToken)) return notFound(); // no timing leak
+const checksum = await hashTextToSha256Hex(payload); // node, browser, and edge
+```
+
+<details>
+<summary>All 2 exports</summary>
+
+- **`hashTextToSha256Hex(text)`** — SHA-256 of a UTF-8 string as lowercase hex. `await hashTextToSha256Hex("hello") // "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"`
+- **`isTimingSafeEqual(a, b)`** — Constant-time string comparison for secrets — tokens, signatures, codes. `isTimingSafeEqual(providedToken, expectedToken) // true only on exact match`
 
 </details>
 
@@ -314,6 +329,24 @@ catch (error) {
 - **`isMaintenanceError(error, options)`** — Whether an error means "the platform is deliberately down", so an error boundary can render the maintenance page instead of "Something went wrong". `isMaintenanceError(err) // true`
 
 Types: `HttpErrorLikeProps`
+
+</details>
+
+### `firestore`
+
+```ts
+const date = parseFirestoreTimestampToDate(doc.createdAt); // any wire/SDK shape, or null
+events.sort((a, b) => getFirestoreTimestampSortMillis(a.startsAt) - getFirestoreTimestampSortMillis(b.startsAt));
+<input type="datetime-local" value={convertFirestoreTimestampToDateTimeLocal(event.startsAt)} />
+```
+
+<details>
+<summary>All 4 exports</summary>
+
+- **`convertFirestoreTimestampToDateTimeLocal(value)`** — Converts any Firestore timestamp representation (or Date, or unix millis) to the `YYYY-MM-DDTHH:mm` value an `<input type="datetime-local">` expects. `convertFirestoreTimestampToDateTimeLocal({ _seconds: 1789459200 }) // "2026-09-23T10:00"`
+- **`getFirestoreTimestampSortMillis(value)`** — Unix milliseconds from any Firestore timestamp representation, with `0` for anything unparseable — a deliberate "very old" sentinel so sort and compare pipelines never branch on null. `getFirestoreTimestampSortMillis({ _seconds: 1705276800 }) // 1705276800000`
+- **`isFirestoreTimestamp(value)`** — Whether a value walks and quacks like a Firestore Timestamp instance — numeric `seconds` and `nanoseconds` plus the `toDate`/`toMillis` methods. `isFirestoreTimestamp(Timestamp.now()) // true`
+- **`parseFirestoreTimestampToDate(value)`** — Best-effort parse of any Firestore timestamp representation into a JS Date. `parseFirestoreTimestampToDate({ _seconds: 1705276800, _nanoseconds: 0 }) // Date`
 
 </details>
 
