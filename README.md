@@ -4,6 +4,7 @@ Typed helper functions for building apps — formatting, dates, strings, files, 
 
 [![npm](https://img.shields.io/npm/v/@timonwa/app-utilities)](https://www.npmjs.com/package/@timonwa/app-utilities)
 [![CI](https://github.com/Timonwa/app-utilities/actions/workflows/ci.yml/badge.svg)](https://github.com/Timonwa/app-utilities/actions/workflows/ci.yml)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-timonwa-FFDD00?logo=buymeacoffee&logoColor=black)](https://www.buymeacoffee.com/timonwa)
 
 Written in TypeScript; ships ESM and CJS with type declarations, is side-effect free so bundlers drop what you don't import, and every export carries the JSDoc you'll see in your editor.
 
