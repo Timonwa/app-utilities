@@ -341,12 +341,34 @@ events.sort((a, b) => getFirestoreTimestampSortMillis(a.startsAt) - getFirestore
 ```
 
 <details>
-<summary>All 4 exports</summary>
+<summary>All 24 exports</summary>
 
+- **`compareFirestoreTimestamps(a, b)`** — Comparator for sorting any timestamp shapes — `docs.sort((a, b) => compareFirestoreTimestamps(a.createdAt, b.createdAt))` ascends. `[later, earlier].sort(compareFirestoreTimestamps) // [earlier, later]`
 - **`convertFirestoreTimestampToDateTimeLocal(value)`** — Converts any Firestore timestamp representation (or Date, or unix millis) to the `YYYY-MM-DDTHH:mm` value an `<input type="datetime-local">` expects. `convertFirestoreTimestampToDateTimeLocal({ _seconds: 1789459200 }) // "2026-09-23T10:00"`
+- **`convertFirestoreTimestampToDate(timestamp)`** — Exact conversion of a Timestamp (live or serialized) to a JS Date — the typed counterpart of `parseFirestoreTimestampToDate`, for values already known to be timestamps. `convertFirestoreTimestampToDate({ seconds: 1705276800, nanoseconds: 0 }) // Date`
+- **`convertFirestoreTimestampToISOString(timestamp)`** — Exact conversion of a Timestamp (live or serialized) to a full ISO 8601 string. `convertFirestoreTimestampToISOString({ seconds: 1705276800, nanoseconds: 0 }) // "2024-01-15T00:00:00.000Z"`
+- **`convertFirestoreTimestampToMillis(timestamp)`** — Exact conversion of a Timestamp (live or serialized) to unix milliseconds. `convertFirestoreTimestampToMillis({ seconds: 1705276800, nanoseconds: 0 }) // 1705276800000`
+- **`createSerializedFirestoreTimestampFromDate(date)`** — The `{ seconds, nanoseconds }` wire shape for a Date — for fixtures and JSON payloads without the SDK. `createSerializedFirestoreTimestampFromDate(new Date(1705276800000)) // { seconds: 1705276800, nanoseconds: 0 }`
+- **`createSerializedFirestoreTimestampFromMillis(millis)`** — The `{ seconds, nanoseconds }` wire shape for a unix-milliseconds moment — for fixtures and JSON payloads without the SDK. `createSerializedFirestoreTimestampFromMillis(1705276800500) // { seconds: 1705276800, nanoseconds: 500000000 }`
+- **`createSerializedFirestoreTimestampNow()`** — The `{ seconds, nanoseconds }` wire shape for the current moment. `createSerializedFirestoreTimestampNow() // { seconds: 1705276800, nanoseconds: 0 }`
+- **`formatFirestoreTimestampToIsoDate(value, fallback = "—")`** — The LOCAL calendar date of any timestamp shape as YYYY-MM-DD — not the UTC date, which is a different day for part of every timezone's evening or morning. `formatFirestoreTimestampToIsoDate({ _seconds: 1705276800 }) // "2024-01-15"`
+- **`formatFirestoreTimestampToOrdinalDate(value, fallback = "—")`** — An ordinal date ("22nd Jun, 2023") from any timestamp shape, with a fallback for anything unparseable. `formatFirestoreTimestampToOrdinalDate({ _seconds: 1705276800 }) // "15th Jan, 2024"`
+- **`formatFirestoreTimestampToReadableDateTime(value, options)`** — A localized long date with the time ("January 15, 2024 at 3:30 PM") from any timestamp shape, with a fallback for anything unparseable. `formatFirestoreTimestampToReadableDateTime({ _seconds: 1705276800 }) // "January 15, 2024 at 12:00 AM"`
+- **`formatFirestoreTimestampToReadableDate(value, options)`** — A localized long date ("January 15, 2024") from any timestamp shape, with a fallback for anything unparseable — the display formatter wire data needs. `formatFirestoreTimestampToReadableDate({ _seconds: 1705276800 }) // "January 15, 2024"`
+- **`formatFirestoreTimestampToRelativeShort(value, fallback = "—")`** — Compact relative time for tight UI ("5m ago", "in 3d") from any timestamp shape, with a fallback for anything unparseable. `formatFirestoreTimestampToRelativeShort(doc.createdAt) // "5m ago"`
+- **`formatFirestoreTimestampToRelative(value, options)`** — Relative time ("2 hours ago", "in 3 days") from any timestamp shape, with a fallback for anything unparseable. `formatFirestoreTimestampToRelative(doc.createdAt) // "2 hours ago"`
+- **`formatFirestoreTimestampToShortDate(value, options)`** — A localized numeric date ("1/15/24" in en-US) from any timestamp shape, with a fallback for anything unparseable. `formatFirestoreTimestampToShortDate({ _seconds: 1705276800 }, { locale: "en-US" }) // "1/15/24"`
 - **`getFirestoreTimestampSortMillis(value)`** — Unix milliseconds from any Firestore timestamp representation, with `0` for anything unparseable — a deliberate "very old" sentinel so sort and compare pipelines never branch on null. `getFirestoreTimestampSortMillis({ _seconds: 1705276800 }) // 1705276800000`
+- **`getTimeFromFirestoreTimestamp(value, fallback = "—")`** — The HH:MM:SS portion of any timestamp shape, in local time, with a fallback for anything unparseable. `getTimeFromFirestoreTimestamp(event.startsAt) // "15:30:45"`
+- **`isFirestoreTimestampInFuture(value)`** — Whether any timestamp shape is strictly in the future. `isFirestoreTimestampInFuture(event.startsAt) // true`
+- **`isFirestoreTimestampInPast(value)`** — Whether any timestamp shape is strictly in the past. `isFirestoreTimestampInPast(event.endsAt) // true`
+- **`isFirestoreTimestampToday(value)`** — Whether any timestamp shape falls on today's LOCAL calendar day. `isFirestoreTimestampToday(doc.createdAt) // true`
 - **`isFirestoreTimestamp(value)`** — Whether a value walks and quacks like a Firestore Timestamp instance — numeric `seconds` and `nanoseconds` plus the `toDate`/`toMillis` methods. `isFirestoreTimestamp(Timestamp.now()) // true`
+- **`isSerializedFirestoreTimestamp(value)`** — Whether a value is the serialized `{ seconds }` / `{ _seconds }` wire shape of a Firestore Timestamp — plain data, no methods. `isSerializedFirestoreTimestamp({ _seconds: 1705276800, _nanoseconds: 0 }) // true`
+- **`isValidFirestoreTimestampInput(value)`** — Whether a value is anything `parseFirestoreTimestampToDate` can turn into a Date — a live Timestamp, a serialized shape, a Date, or unix milliseconds. `isValidFirestoreTimestampInput({ seconds: 1705276800 }) // true`
 - **`parseFirestoreTimestampToDate(value)`** — Best-effort parse of any Firestore timestamp representation into a JS Date. `parseFirestoreTimestampToDate({ _seconds: 1705276800, _nanoseconds: 0 }) // Date`
+
+Types: `FirestoreTimestampInput`, `SerializedFirestoreTimestamp`
 
 </details>
 
