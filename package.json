@@ -1,6 +1,6 @@
 {
   "name": "@timonwa/app-utilities",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Typed helper functions for building apps \u2014 formatting, strings, files, and slugs. Zero dependencies, universal by default, with browser-only APIs behind a separate entry point.",
   "keywords": [
     "utilities",

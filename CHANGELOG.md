@@ -1,5 +1,11 @@
 # @timonwa/app-utilities
 
+## 0.4.0
+
+### Minor Changes
+
+- [`600f168`](https://github.com/Timonwa/app-utilities/commit/600f1686a278103e679c2dc3598c3dadc5548802) Thanks [@Timonwa](https://github.com/Timonwa)! - Complete the `firestore` module to the full house matrix — guards for serialized wire shapes and parser inputs, exact converters to Date/millis/ISO, serialized-shape creators (fixtures and payloads without the SDK), the full fallback-safe format family (iso/readable/readable-date-time/short/relative/relative-short/ordinal/time), and `compareFirestoreTimestamps` plus in-future/in-past/today checks. Date arithmetic stays in the `date` module — parse to a Date, do the math there, and write the Date back (Firestore accepts it natively).
+
 ## 0.3.0
 
 ### Minor Changes
