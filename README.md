@@ -22,6 +22,8 @@ formatDateToRelative(new Date(Date.now() - 7_200_000)); // "2 hours ago"
 truncateString("This is a long string", 10); // "This is a…"
 ```
 
+Requires Node 20+, and a bundler or TypeScript using modern module resolution (`bundler`, `node16`, or `nodenext`). The pre-TS-4.7 `node` mode isn't supported — subpath exports can't work under it.
+
 ## Two entry points
 
 The root export runs anywhere — Next.js on the server or the client, React Native, Node, a worker. Nothing in it touches `window`, `document`, `navigator`, or `localStorage`.
@@ -38,13 +40,13 @@ That split exists for server rendering as much as for React Native — `localSto
 
 ## API reference
 
-Generated from the source JSDoc by `pnpm docs:api` — CI fails when it is out of date, so what you read here is what the code does. Each module below opens with how you would actually use it; expand the list for every export.
+Generated from the source JSDoc — CI fails when it drifts, so what you read here is what the code does.
 
 Jump to: [array](#array) · [bytes](#bytes) · [cloudinary](#cloudinary) · [country](#country) · [crypto](#crypto) · [currency](#currency) · [date](#date) · [error](#error) · [firestore](#firestore) · [form](#form) · [number](#number) · [random](#random) · [string](#string) · [time](#time) · [url](#url) · [validation](#validation) · [browser/clipboard](#browserclipboard) · [browser/image](#browserimage) · [browser/storage](#browserstorage)
 
 ### Universal — `@timonwa/app-utilities`
 
-### `array`
+#### `array`
 
 ```ts
 const upcoming = getArraySortedByKey(events, "startDate");
@@ -76,7 +78,7 @@ const chunks = getArrayChunks(visible, 20); // page-sized slices
 
 </details>
 
-### `bytes`
+#### `bytes`
 
 ```ts
 formatBytes(file.size); // "4.20 MB"
@@ -104,7 +106,7 @@ getUsageLevel(getStoragePercent(used, quota)); // "high" -> map to your own colo
 
 </details>
 
-### `cloudinary`
+#### `cloudinary`
 
 ```ts
 const url = buildCloudinaryUrl({ cloudName, publicId, transform: "w_800,q_auto,f_auto" });
@@ -129,7 +131,7 @@ Types: `CloudinaryAssetType`, `BuildCloudinaryUrlOptions`
 
 </details>
 
-### `country`
+#### `country`
 
 ```ts
 getCountryByCode("NG")?.flag; // "🇳🇬"
@@ -149,7 +151,7 @@ Types: `CountryProps`, `CountryCode`
 
 </details>
 
-### `crypto`
+#### `crypto`
 
 ```ts
 if (!isTimingSafeEqual(providedToken, expectedToken)) return notFound(); // no timing leak
@@ -164,7 +166,7 @@ const checksum = await hashTextToSha256Hex(payload); // node, browser, and edge
 
 </details>
 
-### `currency`
+#### `currency`
 
 ```ts
 formatCurrencyFromMinorUnit(123450, "NGN", { locale: "en-NG" }); // "₦1,234.50"
@@ -194,7 +196,7 @@ const amount = parseCurrencyString(input); // number | null — "free" is not 0
 
 </details>
 
-### `date`
+#### `date`
 
 ```ts
 formatDateToRelative(post.createdAt); // "2 hours ago"
@@ -306,7 +308,7 @@ getTodayISODate(); // local calendar date, never UTC-shifted
 
 </details>
 
-### `error`
+#### `error`
 
 ```ts
 catch (error) {
@@ -332,7 +334,7 @@ Types: `HttpErrorLikeProps`
 
 </details>
 
-### `firestore`
+#### `firestore`
 
 ```ts
 const date = parseFirestoreTimestampToDate(doc.createdAt); // any wire/SDK shape, or null
@@ -372,20 +374,20 @@ Types: `FirestoreTimestampInput`, `SerializedFirestoreTimestamp`
 
 </details>
 
-### `form`
+#### `form`
 
 ```ts
 const message = findFirstErrorMessage(form.formState.errors); // works at any depth
 ```
 
 <details>
-<summary>All 1 exports</summary>
+<summary>1 export</summary>
 
 - **`findFirstErrorMessage(tree)`** — Walks a nested form-errors tree and returns the first leaf `message` string. `findFirstErrorMessage(errors) // "Venue name is required"`
 
 </details>
 
-### `number`
+#### `number`
 
 ```ts
 formatCompactNumber(followers); // "1.5M", localized
@@ -421,7 +423,7 @@ const price = parseStringToNumber(input); // null for "", never 0
 
 </details>
 
-### `random`
+#### `random`
 
 ```ts
 const code = generateReadableCode(); // "K3F7-9TXM", crypto-random, no ambiguous chars
@@ -442,7 +444,7 @@ const otp = generateNumericCode(6); // crypto-random too — users redeem these
 
 </details>
 
-### `string`
+#### `string`
 
 ```ts
 convertStringToKebabCase("v2 Rollout"); // "v2-rollout" — digits stay attached
@@ -479,7 +481,7 @@ maskString(cardNumber); // "••••••••••••4242"
 
 </details>
 
-### `time`
+#### `time`
 
 ```ts
 formatMillisToShortDuration(runtime); // "2h 30m"
@@ -508,7 +510,7 @@ convertTimeTo12Hour(14, 30); // "2:30 PM"
 
 </details>
 
-### `url`
+#### `url`
 
 ```ts
 router.push(safeRedirectPath(searchParams.get("redirect"), "/")); // open-redirect safe
@@ -525,7 +527,7 @@ Types: `OgImageArgsProps`
 
 </details>
 
-### `validation`
+#### `validation`
 
 ```ts
 const result = validateEmail(input); // { valid: false, message: "Invalid email format" }
@@ -560,7 +562,7 @@ Types: `ValidatePasswordOptions`
 
 ### Browser — `@timonwa/app-utilities/browser`
 
-### `browser/clipboard`
+#### `browser/clipboard`
 
 ```ts
 const copied = await copyTextToClipboard(inviteCode);
@@ -575,7 +577,7 @@ setLabel(copied ? "Copied" : "Press ⌘C");
 
 </details>
 
-### `browser/image`
+#### `browser/image`
 
 ```ts
 const upload = await compressImage(file, { maxWidth: 1920, quality: 0.8 });
@@ -583,7 +585,7 @@ const upload = await compressImage(file, { maxWidth: 1920, quality: 0.8 });
 ```
 
 <details>
-<summary>All 1 exports</summary>
+<summary>1 export</summary>
 
 - **`compressImage(file, options)`** — Compresses and/or resizes an image File on the client via the Canvas API, preserving aspect ratio when only one dimension constrains. `const upload = await compressImage(file, { maxWidth: 1920, quality: 0.8 });`
 
@@ -591,7 +593,7 @@ Types: `CompressImageOptionsProps`
 
 </details>
 
-### `browser/storage`
+#### `browser/storage`
 
 ```ts
 setLocalStorageItemWithExpiry("token", token, 3_600_000);
@@ -635,13 +637,9 @@ The rules every function follows:
 - **Intl over hand-rolled locale logic** — relative time, compact numbers, currency symbols, and minor-unit digits all come from the runtime, so there are no lookup tables to go stale.
 - **Nothing project-specific is baked in.** Watermark ids, allowed file types, maintenance codes, OG endpoints — all parameters with sensible defaults.
 
-## Requirements
-
-Node 20+, and a bundler or TypeScript using modern module resolution (`bundler`, `node16`, or `nodenext`). The pre-TS-4.7 `node` mode isn't supported — subpath exports can't work under it.
-
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) — one file per function, tests through the barrel, changesets for release.
+Bug reports and PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

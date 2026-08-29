@@ -129,10 +129,11 @@ function renderModule(title, dir, anchorPrefix) {
   const usage = MODULE_USAGE[title];
   const fns = entries.filter((e) => e.kind === "function" || e.kind === "const");
   const types = entries.filter((e) => e.kind === "interface" || e.kind === "type");
-  let out = `### \`${anchorPrefix}${title}\`\n\n`;
+  // #### so the two entry-point groups (###) visibly contain their modules.
+  let out = `#### \`${anchorPrefix}${title}\`\n\n`;
   if (usage) out += "```ts\n" + usage + "\n```\n\n";
   out += "<details>\n<summary>";
-  out += `All ${fns.length} exports</summary>\n\n`;
+  out += fns.length === 1 ? "1 export</summary>\n\n" : `All ${fns.length} exports</summary>\n\n`;
   for (const e of fns) {
     out += `- **${e.signature}** — ${e.description || "See source."}`;
     if (e.example) out += ` \`${e.example}\``;
@@ -156,7 +157,7 @@ const browserModules = readdirSync(join(SRC, "browser"), { withFileTypes: true }
 
 let api = "## API reference\n\n";
 api +=
-  "Generated from the source JSDoc by `pnpm docs:api` — CI fails when it is out of date, so what you read here is what the code does. Each module below opens with how you would actually use it; expand the list for every export.\n\n";
+  "Generated from the source JSDoc — CI fails when it drifts, so what you read here is what the code does.\n\n";
 api += "Jump to: " + [...rootModules, ...browserModules.map((m) => `browser/${m}`)].map((m) => `[${m}](#${m.replace("/", "")})`).join(" · ") + "\n\n";
 api += "### Universal — `@timonwa/app-utilities`\n\n";
 for (const m of rootModules) api += renderModule(m, join(SRC, m), "");
