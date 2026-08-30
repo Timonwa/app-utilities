@@ -5,5 +5,10 @@
  * @example isValidMillis(1705276800000) // true
  */
 export function isValidMillis(value: unknown): value is number {
-  return typeof value === "number" && !isNaN(value) && isFinite(value) && value >= 0;
+  return (
+    typeof value === "number" &&
+    !Number.isNaN(value) &&
+    Number.isFinite(value) &&
+    value >= 0
+  );
 }

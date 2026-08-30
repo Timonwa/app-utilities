@@ -28,8 +28,9 @@ export function generateReadableCode(
       crypto.getRandomValues(buf);
       cursor = 0;
     }
-    const b = buf[cursor++]!;
-    if (b < acceptMax) chars.push(alphabet[b % alphabet.length]!);
+    // In-bounds by the refill guard above; 256 can never pass the accept test.
+    const b = buf[cursor++] ?? 256;
+    if (b < acceptMax) chars.push(alphabet.charAt(b % alphabet.length));
   }
   if (groupSize <= 0 || groupSize >= length) return chars.join("");
   const groups: string[] = [];

@@ -6,5 +6,5 @@
  */
 export function isValidISODateString(str: string): boolean {
   const date = new Date(str);
-  return !isNaN(date.getTime()) && str.includes("T");
+  return !Number.isNaN(date.getTime()) && str.includes("T");
 }

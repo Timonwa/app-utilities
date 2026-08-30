@@ -15,5 +15,5 @@ export function sanitizeReadableCodeInput(raw: string): string {
     .filter((c) => READABLE_ALPHABET_SET.has(c))
     .slice(0, 8);
   if (chars.length <= 4) return chars.join("");
-  return chars.slice(0, 4).join("") + "-" + chars.slice(4).join("");
+  return `${chars.slice(0, 4).join("")}-${chars.slice(4).join("")}`;
 }
