@@ -15,6 +15,9 @@ export function formatCompactCurrencyAmount(
       style: "currency",
       currency,
       notation: "compact",
+      // Left to default, ICU 76 and earlier derive the minimum from the currency's
+      // digits and pad "$950" to "$950.0" — output would vary by Node version.
+      minimumFractionDigits: 0,
       maximumFractionDigits: 1,
     }).format(amount);
   } catch {
