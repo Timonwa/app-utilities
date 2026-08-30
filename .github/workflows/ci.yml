@@ -36,3 +36,7 @@ jobs:
       # a real consumer would under every module resolution mode.
       - run: pnpm check:publish
       - run: pnpm check:exports
+
+      # The generated API reference has to match the source it documents.
+      - run: pnpm docs:api
+      - run: git diff --exit-code README.md
