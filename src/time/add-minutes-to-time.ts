@@ -10,7 +10,9 @@ import { parseTimeString } from "./parse-time-string.js";
 export function addMinutesToTime(timeString: string, minutesToAdd: number): string {
   const time = parseTimeString(timeString);
   const totalMinutes = time.hours * 60 + time.minutes + minutesToAdd;
-  const newHours = Math.floor(totalMinutes / 60) % 24;
-  const newMinutes = totalMinutes % 60;
+  // Double modulo keeps negative totals wrapping backwards across midnight.
+  const wrapped = ((totalMinutes % 1440) + 1440) % 1440;
+  const newHours = Math.floor(wrapped / 60);
+  const newMinutes = wrapped % 60;
   return `${newHours.toString().padStart(2, "0")}:${newMinutes.toString().padStart(2, "0")}`;
 }

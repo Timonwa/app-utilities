@@ -8,5 +8,8 @@ export function isValidISODate(str: string): boolean {
   const regex = /^\d{4}-\d{2}-\d{2}$/;
   if (!regex.test(str)) return false;
   const date = new Date(str);
-  return !isNaN(date.getTime());
+  if (Number.isNaN(date.getTime())) return false;
+  // V8 rolls overflowing days into the next month ("2024-02-31" → Mar 2), so
+  // round-trip the parse (date-only strings parse as UTC) to catch them.
+  return date.toISOString().slice(0, 10) === str;
 }

@@ -16,13 +16,13 @@ describe("generators", () => {
 
   it("honours length, group size, and separator", () => {
     expect(generateReadableCode(9, 3, ".")).toMatch(
-      /^[A-HJ-NP-Z2-9]{3}\.[A-HJ-NP-Z2-9]{3}\.[A-HJ-NP-Z2-9]{3}$/,
+      /^[A-HJKMNP-Z2-9]{3}\.[A-HJKMNP-Z2-9]{3}\.[A-HJKMNP-Z2-9]{3}$/,
     );
   });
 
   it("skips grouping when asked", () => {
-    expect(generateReadableCode(8, 0)).toMatch(/^[A-HJ-NP-Z2-9]{8}$/);
-    expect(generateReadableCode(4, 8)).toMatch(/^[A-HJ-NP-Z2-9]{4}$/);
+    expect(generateReadableCode(8, 0)).toMatch(/^[A-HJKMNP-Z2-9]{8}$/);
+    expect(generateReadableCode(4, 8)).toMatch(/^[A-HJKMNP-Z2-9]{4}$/);
   });
 
   it("the sanitizer strips ambiguous characters and caps at 8", () => {

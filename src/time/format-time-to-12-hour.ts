@@ -13,6 +13,12 @@ export function formatTimeTo12Hour(time: string): string {
   const hour = parts[0];
   const minute = parts[1];
 
-  if (hour === undefined || minute === undefined) return "";
+  if (
+    hour === undefined ||
+    minute === undefined ||
+    Number.isNaN(hour) ||
+    Number.isNaN(minute)
+  )
+    return "";
   return convertTimeTo12Hour(hour, minute);
 }

@@ -11,7 +11,7 @@ export function extractSocialUsername(value: string): string {
     .replace(/^https?:\/\//, "")
     .replace(/^www\./, "")
     .replace(
-      /^(instagram\.com|x\.com|twitter\.com|facebook\.com|fb\.com|tiktok\.com|linkedin\.com|threads\.net|bsky\.app|github\.com|youtube\.com)\//i,
+      /^(instagram\.com|x\.com|twitter\.com|facebook\.com|fb\.com|tiktok\.com|linkedin\.com(?:\/in|\/company)?|threads\.net|bsky\.app|github\.com|youtube\.com)\//i,
       "",
     )
     .replace(/^@/, "")
