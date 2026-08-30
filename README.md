@@ -115,10 +115,8 @@ const url = buildCloudinaryUrl({ cloudName, publicId, transform: "w_800,q_auto,f
 ```
 
 <details>
-<summary>All 12 exports</summary>
+<summary>All 10 exports</summary>
 
-- **`HOST`** — See source.
-- **`SAMPLE_UPLOAD_URL`** — See source.
 - **`applyCloudinaryTransform(url, transform)`** — Inserts a transform into an existing Cloudinary URL, chaining ahead of any transforms already there.
 - **`buildCloudinaryBlurUrl(url)`** — A tiny, heavily blurred version for use as a placeholder behind the real image while it loads. `buildCloudinaryBlurUrl(url) // ".../upload/w_40,e_blur:1000,q_auto:low,f_auto/..."`
 - **`buildCloudinaryPublicId(segments)`** — Joins path segments into a Cloudinary `public_id`, dropping empties and replacing the characters Cloudinary treats specially in a URL. `buildCloudinaryPublicId(["events", eventId, photoId]) // "events/ev_1/ph_2"`
@@ -321,10 +319,8 @@ catch (error) {
 ```
 
 <details>
-<summary>All 11 exports</summary>
+<summary>All 9 exports</summary>
 
-- **`firebaseError`** — See source.
-- **`authMessages`** — See source.
 - **`formatAuthError(error, options)`** — Like `formatError`, but unwraps `response.data.error` FIRST — auth providers wrap the real error there, and the outer envelope's message ("Request failed with status 400") is never the one to show a user. `formatAuthError(err, { messageForCode: (c) => AUTH_MESSAGES[c] }) // "Incorrect password"`
 - **`formatError(error, options)`** — One displayable string from an error of any shape — HTTP-like, Firebase-shaped, `Error`, or a bare string. `formatError(err) // "Request failed: /events"`
 - **`getErrorMessage(error)`** — A displayable message from an unknown error, drilling into `response.data.{message,error,errors}` when present. `getErrorMessage(err) // "Event not found"`
@@ -348,11 +344,8 @@ events.sort((a, b) => getFirestoreTimestampSortMillis(a.startsAt) - getFirestore
 ```
 
 <details>
-<summary>All 27 exports</summary>
+<summary>All 24 exports</summary>
 
-- **`MILLIS`** — See source.
-- **`SECONDS`** — See source.
-- **`makeTimestampLike(seconds, nanoseconds = 0)`** — See source.
 - **`compareFirestoreTimestamps(a, b)`** — Comparator for sorting any timestamp shapes — `docs.sort((a, b) => compareFirestoreTimestamps(a.createdAt, b.createdAt))` ascends. `[later, earlier].sort(compareFirestoreTimestamps) // [earlier, later]`
 - **`convertFirestoreTimestampToDateTimeLocal(value)`** — Converts any Firestore timestamp representation (or Date, or unix millis) to the `YYYY-MM-DDTHH:mm` value an `<input type="datetime-local">` expects. `convertFirestoreTimestampToDateTimeLocal({ _seconds: 1789459200 }) // "2026-09-23T10:00"`
 - **`convertFirestoreTimestampToDate(timestamp)`** — Exact conversion of a Timestamp (live or serialized) to a JS Date — the typed counterpart of `parseFirestoreTimestampToDate`, for values already known to be timestamps. `convertFirestoreTimestampToDate({ seconds: 1705276800, nanoseconds: 0 }) // Date`
@@ -544,9 +537,8 @@ if (hasValidationErrors(results)) show(results);
 ```
 
 <details>
-<summary>All 18 exports</summary>
+<summary>All 17 exports</summary>
 
-- **`file`** — See source.
 - **`hasValidationErrors(results)`** — Checks whether any result in a list of validation results is invalid. `hasValidationErrors(results) // true when any result is invalid`
 - **`DEFAULT_DOCUMENT_TYPES`** — Word and PDF; pass your product's own list to change the policy.
 - **`validateDocumentFile(file, allowedTypes = DEFAULT_DOCUMENT_TYPES)`** — Validates a file's MIME type against an allowed list, defaulting to Word and PDF. `validateDocumentFile(file) // { valid: true }`
@@ -610,10 +602,8 @@ const token = getLocalStorageItemWithExpiry<string>("token"); // undefined once 
 ```
 
 <details>
-<summary>All 22 exports</summary>
+<summary>All 20 exports</summary>
 
-- **`installStorageMocks()`** — See source.
-- **`installThrowingStorageMocks()`** — See source.
 - **`clearLocalStorage()`** — Clears all items from localStorage. `clearLocalStorage()`
 - **`clearSessionStorage()`** — Clears all items from sessionStorage. `clearSessionStorage()`
 - **`getLocalStorageItemWithExpiry(key)`** — Gets an item from localStorage, returning undefined if expired. `getLocalStorageItemWithExpiry<string>("token") // "abc123"`

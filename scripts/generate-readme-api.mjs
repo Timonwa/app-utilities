@@ -93,7 +93,7 @@ function displayParams(raw) {
 function parseModule(dir) {
   const entries = [];
   for (const file of readdirSync(dir).sort()) {
-    if (!file.endsWith(".ts") || file === "index.ts" || file === "_shared.ts") continue;
+    if (!file.endsWith(".ts") || file === "index.ts" || file === "_shared.ts" || file === "_test-helpers.ts") continue;
     if (file.endsWith(".test.ts")) continue;
     const source = readFileSync(join(dir, file), "utf8");
     const exportRe =
