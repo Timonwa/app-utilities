@@ -1,5 +1,11 @@
 # @timonwa/app-utilities
 
+## 0.4.2
+
+### Patch Changes
+
+- [#5](https://github.com/Timonwa/app-utilities/pull/5) [`f28b63a`](https://github.com/Timonwa/app-utilities/commit/f28b63a61bc55677783c7660a1b5cb22a21d81d6) Thanks [@Timonwa](https://github.com/Timonwa)! - `formatCompactCurrencyAmount` now formats whole amounts identically on every supported Node version. The minimum fraction digits were left to the engine, and ICU 76 and earlier derive them from the currency's own digits — so `formatCompactCurrencyAmount(950, "USD")` produced `"$950.0"` on Node 22 but `"$950"` on Node 26.
+
 ## 0.4.1
 
 ### Patch Changes
