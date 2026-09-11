@@ -80,7 +80,7 @@
     "tsdown": "^0.22.14",
     "typescript": "^5.9.3",
     "unrun": "^0.3.1",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   },
   "lint-staged": {
     "*.{ts,json,md}": "biome check --write --no-errors-on-unmatched"
